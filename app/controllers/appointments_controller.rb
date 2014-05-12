@@ -50,7 +50,7 @@ class AppointmentsController < ApplicationController
 
   # GET /appointments/book
   def book
-    @services_available = Service.where company_id: current_user.company_id
+    @services_available = Service.where company_id: 2
     @appointment = Appointment.new
     @appointment.company_id = 2
   end

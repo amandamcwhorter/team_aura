@@ -1,3 +1,7 @@
+<style>
+
+
+</style>
 <script>
   $(document).ready(function() {
     $('.step-2').hide();
@@ -8,6 +12,8 @@
     });
 
     $('.datepicker').datetimepicker();
+
+    $('.inactive').attr('disabled', true);
   });
 
 </script>
@@ -42,9 +48,71 @@
 <div class="container-fluid step-2">
   <h1>Step 2</h1>
   <div class="row">
-
-    <div class="col-sm-2">
-      <%= link_to 'Change', :pass_companies_location_path %>
+    <div class="well col-sm-8">
+      <div class="col-sm-3">
+        service name
+      </div>
+      <div class="col-sm-3">
+        service price
+      </div>
+      <div class="col-sm-3">
+        service duration
+      </div>
+      <div class="col-sm-3">
+        <%= link_to 'Change', :pass_companies_location_path %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3" id="datepicker"></div>
+    <div class="col-sm-1">
+      <a class="btn btn-default inactive">9 am</a>
+      <a class="btn btn-default inactive">9:30 am</a>
+      <a class="btn btn-default book-time">10 am</a>
+      <a class="btn btn-default">10:30 am</a>
+      <a class="btn btn-default inactive">11 am</a>
+      <a class="btn btn-default inactive">11:30 am</a>
+      <a class="btn btn-default">12 pm</a>
+      <a class="btn btn-default inactive">12:30 pm</a>
+    </div>
+    <div class="col-sm-1">
+      <a class="btn btn-default">1 pm</a>
+      <a class="btn btn-default">1:30 pm</a>
+      <a class="btn btn-default">2 pm</a>
+      <a class="btn btn-default inactive">2:30 pm</a>
+      <a class="btn btn-default">3 pm</a>
+      <a class="btn btn-default">3:30 pm</a>
+      <a class="btn btn-default">4 pm</a>
+      <a class="btn btn-default">4:30 pm</a>
     </div>
   </div>
 </div>
+
+<div class="comtainer-fluid step 3">
+  <h1>Step 3</h1>
+
+  <div class="well col-sm-8">
+    <div class="row">
+      <div class="col-sm-3">
+        service name
+      </div>
+      <div class="col-sm-3">
+        service price
+      </div>
+      <div class="col-sm-3">
+        service duration
+      </div>
+      <div class="col-sm-3">
+        <%= link_to 'Change', :pass_companies_location_path %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        Date and Time
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+
