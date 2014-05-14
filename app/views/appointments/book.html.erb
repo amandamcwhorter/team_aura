@@ -167,29 +167,68 @@
           <!-- Default panel contents -->
           <div class="panel-heading">Available Appointments</div>
           <div class="panel-body">
-            <ul id="available_times" class="nav nav-pills">
+            <!--<ul id="available_times" class="nav nav-pills"></ul>-->
 
-            </ul>
-          </div>
-        </div>
-      </div>
+            <%= form_for(@appointment) do |f| %>
 
+                  <%= f.hidden_field :service_id %>
+                  <%= f.hidden_field :company_id, :value => @company.id %>
+                  <%= f.hidden_field :location_id %>
+                  <%= f.hidden_field :guest_id, :value => user_signed_in? ? current_user.id : '' %>
+                  <%= f.hidden_field :cost %>
+                  <%= f.label :datetime_begin %>
+                  <%= f.text_field :datetime_begin %>
+                  <td><%= f.label :host_id %></td>
+                  <td><%= f.text_field :host_id %></td>
+                  <br>
+                  <td><%= f.submit %></td>
 
-      <%= form_for(@appointment) do |f| %>
-          <div class="row">
-            <%= f.hidden_field :service_id %>
-            <%= f.hidden_field :company_id, :value => @company.id %>
-            <%= f.hidden_field :location_id %>
-            <%= f.hidden_field :guest_id, :value => user_signed_in? ? current_user.id : '' %>
-          </div>
-      <% end %>
-
+            <% end %>`
 
 
       <div id="signup-form" class="hide">
-        You need to register for an account to proceed.
-        <button>sign up</button>
-      </div>
+        You need to register for an account or login to proceed.
+
+          <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+          <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+
+
     </div>
   </div>
 </div>
+      </div>
+    </div>
+  </div>
+
+<!--<div class="step-3 hide">-->
+  <!--<div class="panel panel-default">-->
+
+    <!--<div class="panel-heading"><h2>Step 3: Enter Contact Information</h2></div>-->
+    <!--<div class="panel-body">-->
+      <!--<form role="form">-->
+        <!--<div class="form-group">-->
+          <!--<label for="firstName">First Name</label>-->
+          <!--<input placeholder="First name">-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+          <!--<label for="lastName">Last Name</label>-->
+          <!--<input placeholder="Last name">-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+          <!--<label for="email">Email</label>-->
+          <!--<input placeholder="Email">-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+          <!--<label for="phoneNumber">Phone Number</label>-->
+          <!--<input placeholder="Phone Number">-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+          <!--<label for="comments">Comments</label>-->
+          <!--<textarea placeholder="Comments"></textarea>-->
+        <!--</div>-->
+        <!--<button type="submit" class="btn btn-default">Submit</button>-->
+      <!--</form>-->
+    <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  </div>
