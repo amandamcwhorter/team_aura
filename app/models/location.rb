@@ -78,7 +78,7 @@ class Location < ActiveRecord::Base
     # this will only return scheduled appointments which fal within the open timeslots
     @appointments_unixstart = @timeslots.first['datetime_begin'].to_time.to_i
     @appointments_unixend = @timeslots.last['datetime_begin'].to_time.to_i
-    @appointments = Appointment.scheduledByDate(self.company_id, @appointments_unixstart, @appointments_unixend)
+    @appointments = Appointment.scheduledByDate(self.company_id, @appointments_unixstart, @appointments_unixend, nil, false)
 
     #puts "***************** APPT COUNT " + @appointments.length.to_s
 

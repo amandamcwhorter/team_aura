@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  COLORS = ["blue","green","red","black","grey","purple","orange"]
+  COLORS = ["blue","green","red","black","pink","purple","orange"]
 
   def fullname
     @fullname = '' #start with a blank to avoid nil problems in the view

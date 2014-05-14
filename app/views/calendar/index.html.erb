@@ -77,8 +77,7 @@
                 $('#appt-leftnav-'+appt.id).remove();
                 //render the appointment in the "approved" pane
                 renderOneAppt('appointments_approved', appt);
-                // re-render calendar
-                $("#calendar").fullCalendar( 'refetchEvents' );
+                refreshCalendar();
 
         }).fail(function(){
             //console.log('could not approve appointment!');
@@ -97,8 +96,7 @@
             // remove the appt block from the "unapproved" pane
             $('#appt-leftnav-'+appt.id).remove();
 
-            // re-render calendar
-            $("#calendar").fullCalendar( 'refetchEvents' );
+            refreshCalendar();
 
         }).fail(function(){
             //console.log('could not cancel appointment!');
@@ -115,6 +113,40 @@
         return values.join(",");
     }
 
+    // re-render calendar
+    function refreshCalendar(){
+        $("#calendar").fullCalendar( 'refetchEvents' );
+    }
+
+    function renderApprovedAppointmentsTabPane(){
+        // get approved appointments and populate in approved tab pane
+        $.ajax({
+            url: '/account/appointments/approved'
+        }).done(function(data){
+            console.log(data.length);
+            $('#approved-badge-count').text(data.length);
+            $.each(data, function(index, appt){
+                //console.log(appt);
+                renderOneAppt('appointments_approved', appt);
+            });
+        });
+    }
+
+    function renderUnApprovedAppointmentsTabPane(){
+        // get unapproved appointments and populate in approved tab pane
+        $.ajax({
+            url: '/account/appointments/unapproved'
+        }).done(function(data){
+            //console.log(data);
+            $('#unapproved-badge-count').text(data.length);
+            $.each(data, function(index, appt){
+                //console.log(appt);
+                renderOneAppt('appointments_unapproved', appt);
+            });
+        });
+
+    }
+
   $(document).ready(function(){
 
 
@@ -125,34 +157,9 @@
           $(this).tab('show');
       });
 
-
-      // get approved appointments and populate in approved tab pane
-      $.ajax({
-          url: '/account/appointments/approved'
-      }).done(function(data){
-          //console.log(data);
-          $.each(data, function(index, appt){
-            //console.log(appt);
-            renderOneAppt('appointments_approved', appt);
-          });
-      });
-
-      // get unapproved appointments and populate in approved tab pane
-      $.ajax({
-          url: '/account/appointments/unapproved'
-      }).done(function(data){
-          //console.log(data);
-          $.each(data, function(index, appt){
-              //console.log(appt);
-              renderOneAppt('appointments_unapproved', appt);
-          });
-      });
-
-      // don't hide dropdown button when checkbox clicked
-      $('.dropdown-menu input, .dropdown-menu label').click(function(e) {
-          e.stopPropagation();
-
-      });
+      // render tab panes with upcoming events
+      renderApprovedAppointmentsTabPane();
+      renderUnApprovedAppointmentsTabPane();
 
       $('.show-staff-checkbox').on('click',function(){
           //getVisibleStaff();
@@ -168,6 +175,32 @@
           $("html").css("margin-right", "-15px");
       });
 
+      // new_appointment form POST
+      // bind form post so it uses ajax
+      $('#new_appointment').on('submit',function(e){
+          // prevent normal form post
+          e.preventDefault();
+
+          // post form via ajax
+          $.ajax({
+              url: '/appointments',
+              type: 'POST',
+              dataType: 'json',
+              data: $(this).serialize()
+          }).done(function(data){
+              //alert('Appointment Saved');
+              refreshCalendar();
+              $('#createEventModal').modal('hide');
+          }).fail(function(jqXHR, textStatus, errorThrown){
+              var errormessage = '';
+              $.each(jqXHR.responseJSON, function(index, error){
+                errormessage += error + "\n";
+              });
+              alert(errormessage);
+          });
+
+      });
+
   });
 </script>
 
@@ -181,8 +214,8 @@
         <div>
           <!-- Nav tabs -->
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#appointments_approved" data-toggle="tab">Scheduled</a></li>
-            <li><a href="#appointments_unapproved" data-toggle="tab">Pending</a></li>
+            <li class="active"><a href="#appointments_approved" data-toggle="tab">Scheduled <span id="approved-badge-count" class="badge badge-info"></span></a></li>
+            <li><a href="#appointments_unapproved" data-toggle="tab">Pending <span id="unapproved-badge-count" class="badge"></span></a></li>
           </ul>
 
           <!-- Tab panes -->
@@ -226,7 +259,7 @@
   </div> <!-- end of container -->
 
 <!-- event modal -->
-<div id="createEventModal" class="modal hide" role="dialog" style="height: 460px;overflow:auto;">
+<div id="createEventModal" class="modal hide" role="dialog" style="height: 360px;overflow:auto;">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
     <h3 id="myModalLabel1">Create Appointment</h3>

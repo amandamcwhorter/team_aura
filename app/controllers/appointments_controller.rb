@@ -114,7 +114,7 @@ class AppointmentsController < ApplicationController
         format.json { render action: 'show', status: :created, location: @appointment }
       else
         format.html { render action: 'new' }
-        format.json { render json: @appointment.errors, status: :unprocessable_entity }
+        format.json { render json: @appointment.errors.full_messages, status: :unprocessable_entity }
       end
     end
   end
@@ -210,7 +210,7 @@ class AppointmentsController < ApplicationController
 
     @company_id = current_user.company_id
 
-    @appointments = Appointment.scheduledByDate(@company_id, params[:start], params[:end], params['staff'])
+    @appointments = Appointment.scheduledByDate(@company_id, params[:start], params[:end], params['staff'], true)
 
     respond_to do |format|
       format.json { render json: @appointments.to_json(:only => [:id], :methods => [:start, :end, :title, :allDay, :color, :datestart]) }

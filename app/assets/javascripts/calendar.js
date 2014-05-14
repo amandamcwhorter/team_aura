@@ -67,13 +67,14 @@ $(document).ready(function() {
 //        },
 //
         select: function(start, end, allDay) {
-            endtime = $.fullCalendar.formatDate(end,'h:mm tt');
-            starttime = $.fullCalendar.formatDate(start,'ddd, MMM d, h:mm tt');
-            var mywhen = starttime + ' - ' + endtime;
-            $('#createEventModal #apptStartTime').val(start);
-            $('#createEventModal #apptEndTime').val(end);
-            $('#createEventModal #apptAllDay').val(allDay);
-            $('#createEventModal #when').text(mywhen);
+            //console.log(start);
+            //console.log(allDay);
+
+            // format incoming date form calendar for form
+            starttime = $.fullCalendar.formatDate(start,'MM/dd/yyyy HH:mm');
+            // insert formatted date into the datepicker on form
+            $('#createEventModal #appointment_datetime_begin').val(starttime);
+            // open up the modal
             $('#createEventModal').removeClass('hide').modal({backdrop:false});
         },
 
@@ -102,29 +103,4 @@ $(document).ready(function() {
 //        ]
     });
 
-    $('#submitButton').on('click', function(e){
-        // We don't want this to act as a link so cancel the link action
-        e.preventDefault();
-
-        doSubmit();
-    });
-
-    function doSubmit(){
-        $("#createEventModal").addClass('hide').modal('hide');
-        console.log($('#apptStartTime').val());
-        console.log($('#apptEndTime').val());
-        console.log($('#apptAllDay').val());
-        alert("form submitted");
-
-        $("#calendar").fullCalendar('renderEvent',
-            {
-                title: $('#patientName').val(),
-                start: new Date($('#apptStartTime').val()),
-                end: new Date($('#apptEndTime').val()),
-                allDay: ($('#apptAllDay').val() == "true")
-            },
-            true);
-    }
-
-    $('.dropdown-toggle').dropdown()
 });

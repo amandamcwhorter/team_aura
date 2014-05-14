@@ -47,12 +47,18 @@ class Appointment < ActiveRecord::Base
     return true
   end
   def color
+    if !self.accepted
+      return "#333"
+    end
     return host.color
   end
 
-  def self.scheduledByDate(company_id, unixstart, unixend, staff)
+  def self.scheduledByDate(company_id, unixstart, unixend, staff, showUnscheduled = false)
     # basic where clause
-    @whereClause = 'company_id = ? AND accepted is true AND cancelled is not true'
+    @whereClause = 'company_id = ? AND cancelled is not true'
+    if(!showUnscheduled)
+      @whereClause += ' AND accepted is true'
+    end
 
     #if passed, limit results by start and end times
 
