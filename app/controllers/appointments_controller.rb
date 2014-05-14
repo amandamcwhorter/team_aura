@@ -56,6 +56,7 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new
     @appointment.company_id = params[:company_id]
     @appointment.location_id = params[:location_id]
+    @staffs = User.where company_id: params[:company_id]
   end
 
   # POST /appointments
@@ -123,7 +124,7 @@ class AppointmentsController < ApplicationController
   def booked
     #convert date string to Datetime object
     @appointment = Appointment.new(appointment_params_parsed)
-    @appointment.company_id = 2
+    @appointment.company_id = params[:company_id]
     @appointment.accepted = false
 
     # need to ensure there is a User to save as guest
